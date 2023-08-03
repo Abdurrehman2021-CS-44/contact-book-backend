@@ -24,8 +24,13 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.model("Contact", contactSchema);
 
-app.get("/contacts", (req, res) => {
+app.route("/contacts")
+.get((req, res) => {
     res.json({name: "Abdurrehman Bin Faheem"})
+})
+.post((req, res) => {
+    const newContact = req.body;
+    console.log(newContact);
 });
 
 app.listen(5000, () => {
