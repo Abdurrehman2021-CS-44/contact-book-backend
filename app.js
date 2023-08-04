@@ -44,8 +44,19 @@ app.route("/contacts")
     })
     .catch((err)=>{
         console.log(err);
-    })
+    });
     res.json({isSuccess: true});
+})
+.delete((req, res)=>{
+    Contact.deleteOne({_id: req.body.id})
+    .then(()=>{
+        res.json({message: "Data has been deleted from the database."})
+        console.log("Data has been deleted from the database.");
+    })
+    .catch((err)=>{
+        res.json({message: err})
+        console.log(err);
+    });
 });
 
 app.listen(5000, () => {
