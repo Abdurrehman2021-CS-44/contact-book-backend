@@ -29,7 +29,6 @@ const Contact = mongoose.model("Contact", contactSchema);
 
 app.route("/contacts")
 .get((req, res) => {
-    console.log("I am in");
     Contact.find({})
     .then((contacts)=>{
         res.json({data: contacts})
@@ -40,11 +39,10 @@ app.route("/contacts")
 })
 .post((req, res) => {
     const newContact = req.body;
-    console.log(newContact);
     const contact = new Contact(newContact);
     contact.save()
     .then(()=>{
-        res.json("Data has been added to the database.");
+        res.json("Contact has been added.");
     })
     .catch((err)=>{
         res.json({message: err});
@@ -53,17 +51,16 @@ app.route("/contacts")
 .delete((req, res)=>{
     Contact.deleteOne({_id: req.body.id})
     .then(()=>{
-        res.json({message: "Data has been deleted."})
+        res.json({message: "Contact has been deleted."})
     })
     .catch((err)=>{
         res.json({message: err})
     });
 })
 .put((req, res)=>{
-    console.log(req.body);
     Contact.replaceOne({_id: req.body.id}, {...req.body.update})
     .then(()=>{
-        res.json({message: "Data has been updated."})
+        res.json({message: "Contact has been updated."})
     })
     .catch((err)=>{
         res.json({message: err})
