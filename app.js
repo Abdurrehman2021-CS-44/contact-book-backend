@@ -29,7 +29,10 @@ const Contact = mongoose.model("Contact", contactSchema);
 
 app.route("/contacts")
 .get((req, res) => {
-    res.json({name: "Abdurrehman Bin Faheem"})
+    Contact.find({})
+    .then((contacts)=>{
+        res.json({data: contacts})
+    })
 })
 .post((req, res) => {
     const newContact = req.body;
