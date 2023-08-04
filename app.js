@@ -29,10 +29,14 @@ const Contact = mongoose.model("Contact", contactSchema);
 
 app.route("/contacts")
 .get((req, res) => {
+    console.log("I am in");
     Contact.find({})
     .then((contacts)=>{
         res.json({data: contacts})
     })
+    .catch((err)=>{
+        res.json({message: err});
+    });
 })
 .post((req, res) => {
     const newContact = req.body;
@@ -40,22 +44,29 @@ app.route("/contacts")
     const contact = new Contact(newContact);
     contact.save()
     .then(()=>{
-        console.log("Data has been added to the database.");
+        res.json("Data has been added to the database.");
     })
     .catch((err)=>{
-        console.log(err);
+        res.json({message: err});
     });
-    res.json({isSuccess: true});
 })
 .delete((req, res)=>{
     Contact.deleteOne({_id: req.body.id})
     .then(()=>{
-        res.json({message: "Data has been deleted from the database."})
-        console.log("Data has been deleted from the database.");
+        res.json({message: "Data has been deleted."})
     })
     .catch((err)=>{
         res.json({message: err})
-        console.log(err);
+    });
+})
+.put((req, res)=>{
+    console.log(req.body);
+    Contact.replaceOne({_id: req.body.id}, {...req.body.update})
+    .then(()=>{
+        res.json({message: "Data has been updated."})
+    })
+    .catch((err)=>{
+        res.json({message: err})
     });
 });
 
