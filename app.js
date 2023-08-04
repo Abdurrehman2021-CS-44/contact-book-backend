@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const cors = require("cors");
 
 const app = express();
 
+app.use(express.json())
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: true}));
 
 mongoose.connect("mongodb://127.0.0.1:27017/contactsDB")
@@ -31,6 +34,15 @@ app.route("/contacts")
 .post((req, res) => {
     const newContact = req.body;
     console.log(newContact);
+    const contact = new Contact(newContact);
+    contact.save()
+    .then(()=>{
+        console.log("Data has been added to the database.");
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+    res.json({isSuccess: true});
 });
 
 app.listen(5000, () => {
